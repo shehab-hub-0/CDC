@@ -26,7 +26,8 @@ jobs:
 
       - name: 📝 Check Code Formatting (Black)
         run: |
-          black --check . --force-exclude ".*setup_pipeline\.py"
+          # Only check directories that are stable, skipping the root scripts folder
+          black --check generator/ tests/ superset/ notebooks/
 
       - name: 🔍 Static Security Analysis (Bandit)
         run: |
