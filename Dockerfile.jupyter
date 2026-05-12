@@ -1,0 +1,95 @@
+FROM spark-jupyter-workspace:latest
+
+USER root
+
+# ============================================
+# Download JDBC Drivers & Spark Connectors
+# ============================================
+# All JARs go to $SPARK_HOME/jars so they're auto-loaded
+
+# --- PostgreSQL JDBC Driver ---
+RUN curl -fsSL -o ${SPARK_HOME}/jars/postgresql-42.7.3.jar \
+    https://jdbc.postgresql.org/download/postgresql-42.7.3.jar
+
+# --- MySQL JDBC Driver ---
+RUN curl -fsSL -o ${SPARK_HOME}/jars/mysql-connector-j-8.3.0.jar \
+    https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/8.3.0/mysql-connector-j-8.3.0.jar
+
+# --- Spark Kafka Connector + Dependencies ---
+RUN curl -fsSL -o ${SPARK_HOME}/jars/spark-sql-kafka-0-10_2.12-3.5.0.jar \
+    https://repo1.maven.org/maven2/org/apache/spark/spark-sql-kafka-0-10_2.12/3.5.0/spark-sql-kafka-0-10_2.12-3.5.0.jar && \
+    curl -fsSL -o ${SPARK_HOME}/jars/kafka-clients-3.4.1.jar \
+    https://repo1.maven.org/maven2/org/apache/kafka/kafka-clients/3.4.1/kafka-clients-3.4.1.jar && \
+    curl -fsSL -o ${SPARK_HOME}/jars/spark-token-provider-kafka-0-10_2.12-3.5.0.jar \
+    https://repo1.maven.org/maven2/org/apache/spark/spark-token-provider-kafka-0-10_2.12/3.5.0/spark-token-provider-kafka-0-10_2.12-3.5.0.jar && \
+    curl -fsSL -o ${SPARK_HOME}/jars/commons-pool2-2.12.0.jar \
+    https://repo1.maven.org/maven2/org/apache/commons/commons-pool2/2.12.0/commons-pool2-2.12.0.jar
+
+# --- Spark Avro (for Kafka Avro messages) ---
+RUN curl -fsSL -o ${SPARK_HOME}/jars/spark-avro_2.12-3.5.0.jar \
+    https://repo1.maven.org/maven2/org/apache/spark/spark-avro_2.12/3.5.0/spark-avro_2.12-3.5.0.jar
+
+# --- Delta Lake ---
+RUN curl -fsSL -o ${SPARK_HOME}/jars/delta-spark_2.12-3.2.1.jar \
+    https://repo1.maven.org/maven2/io/delta/delta-spark_2.12/3.2.1/delta-spark_2.12-3.2.1.jar && \
+    curl -fsSL -o ${SPARK_HOME}/jars/delta-storage-3.2.1.jar \
+    https://repo1.maven.org/maven2/io/delta/delta-storage/3.2.1/delta-storage-3.2.1.jar
+
+# --- Hadoop AWS (for S3/MinIO) ---
+RUN curl -fsSL -o ${SPARK_HOME}/jars/hadoop-aws-3.3.4.jar \
+    https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.3.4/hadoop-aws-3.3.4.jar && \
+    curl -fsSL -o ${SPARK_HOME}/jars/aws-java-sdk-bundle-1.12.262.jar \
+    https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.12.262/aws-java-sdk-bundle-1.12.262.jar
+
+# --- ClickHouse JDBC Driver ---
+RUN curl -fsSL -o ${SPARK_HOME}/jars/clickhouse-jdbc-0.6.2-all.jar \
+    https://github.com/ClickHouse/clickhouse-java/releases/download/v0.6.2/clickhouse-jdbc-0.6.2-all.jar
+
+# ============================================
+# Install Python Libraries
+# ============================================
+# Step 1: Install delta-spark WITHOUT pulling pyspark (already in base image)
+RUN pip install --no-cache-dir --no-deps delta-spark==3.2.1
+
+# Step 2: Install all other libraries
+RUN pip install --no-cache-dir \
+    psycopg2-binary \
+    kafka-python-ng \
+    confluent-kafka \
+    pandas \
+    pyarrow \
+    sqlalchemy \
+    boto3 \
+    requests \
+    python-dotenv \
+    faker \
+    matplotlib \
+    seaborn \
+    plotly \
+    openpyxl \
+    great-expectations \
+    # --- Email ---
+    yagmail \
+    secure-smtplib \
+    # --- WhatsApp (via Twilio API) ---
+    twilio \
+    pywhatkit \
+    # --- Thrift Server / Hive Connectivity ---
+    pyhive \
+    thrift \
+    pure-sasl \
+    # --- ClickHouse ---
+    clickhouse-connect
+
+# ============================================
+# Spark Configuration
+# ============================================
+COPY config/spark-defaults.conf ${SPARK_HOME}/conf/spark-defaults.conf
+
+# Fix permissions
+RUN chown -R jupyter:jupyter ${SPARK_HOME}/jars/ && \
+    chown -R jupyter:jupyter ${SPARK_HOME}/conf/
+
+USER jupyter
+
+WORKDIR /workspace

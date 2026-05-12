@@ -1,0 +1,29 @@
+FROM apache/superset:latest
+
+USER root
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        netcat-openbsd \
+        libpq-dev \
+        gcc \
+        python3-dev && \
+    rm -rf /var/lib/apt/lists/*
+
+# Install ALL ClickHouse drivers to ensure SQLAlchemy can find the dialect
+# clickhouse-sqlalchemy provides 'clickhouse://' and 'clickhouse+http://'
+# clickhouse-connect provides 'clickhouse+connect://'
+RUN /app/.venv/bin/python3 -m ensurepip && \
+    /app/.venv/bin/python3 -m pip install --no-cache-dir -U pip && \
+    /app/.venv/bin/python3 -m pip install --no-cache-dir \
+        "sqlalchemy<2.0" \
+        psycopg2-binary \
+        clickhouse-connect \
+        clickhouse-sqlalchemy
+
+# Copy the initialization script
+COPY superset_init.sh /app/superset_init.sh
+RUN chmod +x /app/superset_init.sh
+
+USER superset
+ENTRYPOINT ["/app/superset_init.sh"]

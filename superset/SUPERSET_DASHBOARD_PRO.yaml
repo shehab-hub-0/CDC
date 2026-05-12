@@ -1,0 +1,66 @@
+# Superset Dashboard Export
+databases:
+- database_name: ClickHouse
+  sqlalchemy_uri: ${CLICKHOUSE_URI}
+  tables:
+  - table_name: transactions
+    main_dttm_col: transaction_time
+    columns:
+    - {column_name: transaction_id, type: String}
+    - {column_name: account_number, type: String}
+    - {column_name: customer_name, type: String}
+    - {column_name: transaction_amount, type: Float64}
+    - {column_name: currency, type: String}
+    - {column_name: transaction_type, type: String}
+    - {column_name: transaction_time, type: 'DateTime64(3, "UTC")', is_dttm: true}
+    - {column_name: merchant_name, type: String}
+    - {column_name: city, type: String}
+    - {column_name: country, type: String}
+    - {column_name: phone_number, type: String}
+    - {column_name: payment_method, type: String}
+    - {column_name: ip_address, type: String}
+    - {column_name: is_vip, type: UInt8}
+    - {column_name: category, type: String}
+    - {column_name: status, type: String}
+    - {column_name: fee, type: Float64}
+    - {column_name: balance_before, type: Float64}
+    - {column_name: balance_after, type: Float64}
+    - {column_name: risk_score, type: Float64}
+    - {column_name: device_type, type: String}
+    - {column_name: browser_agent, type: String}
+    - {column_name: source_db_updated_at, type: 'DateTime64(3, "UTC")', is_dttm: true}
+    metrics:
+    - metric_name: count
+      expression: count(*)
+    - metric_name: sum_amount
+      expression: sum(transaction_amount)
+
+dashboards:
+- dashboard_title: Real-Time Financial DWH
+  description: Monitoring transactions from Postgres via Debezium and Spark.
+  slug: financial-realtime
+  uuid: 4f5e6d7c-8b9a-4c2d-8e1f-0a1b2c3d4e5f
+  position:
+    DASHBOARD_VERSION_KEY: v2
+    ROOT_ID:
+      children: [GRID_ID]
+      id: ROOT_ID
+      type: ROOT
+    GRID_ID:
+      children: [ROW-1]
+      id: GRID_ID
+      type: GRID
+    ROW-1:
+      children: [CHART-1, CHART-2]
+      id: ROW-1
+      type: ROW
+    CHART-1:
+      id: CHART-1
+      meta: {chartId: 101, width: 6, height: 50, sliceName: 'Total Transaction Volume'}
+      type: CHART
+    CHART-2:
+      id: CHART-2
+      meta: {chartId: 102, width: 6, height: 50, sliceName: 'Transactions by Type'}
+      type: CHART
+  metadata:
+    refresh_frequency: 5

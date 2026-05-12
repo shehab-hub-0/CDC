@@ -1,0 +1,2 @@
+-- Optional scripts and audit triggers can be added here
+-- This file is currently empty to support the initialization flow.

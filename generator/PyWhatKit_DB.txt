@@ -1,0 +1,30 @@
+Date: 11/5/2026
+Time: 0:37
+Phone Number: +201289910575
+Message: 🚨 *BANK ALERT*: Admin Transaction of 55000.0 EGP detected. (Test Script)
+--------------------
+Date: 11/5/2026
+Time: 0:38
+Phone Number: +201289910575
+Message: 🚨 *BANK ALERT*: Admin Transaction of 55000.0 EGP detected. (Test Script)
+--------------------
+Date: 11/5/2026
+Time: 0:45
+Phone Number: +201289910575
+Message: 🚨 *BANK ALERT*: Admin Transaction of 55000.0 EGP detected. (Test Script)
+--------------------
+Date: 11/5/2026
+Time: 21:18
+Phone Number: +201289910575
+Message: 🚨 *SECURITY ALERT | تنبيه أمني*⚠️ *High Value Transaction Detected*⚠️ *تم رصد عملية بمبلغ كبير*💰 *Amount:* 55,000.00 EGP💰 *المبلغ:* 55,000.00 ج.م👤 *User:* shehab_admin🆔 *ID:* 40bb36b2...🕒 *Time:* 21:18:38✅ *CDC Real-Time Monitoring System*
+--------------------
+Date: 11/5/2026
+Time: 21:51
+Phone Number: +201289910575
+Message: 🚨 *SECURITY ALERT | تنبيه أمني*⚠️ *High Value Transaction Detected*⚠️ *تم رصد عملية بمبلغ كبير*💰 *Amount:* 55,000.00 EGP💰 *المبلغ:* 55,000.00 ج.م👤 *User:* shehab_admin🆔 *ID:* 0f1dd74c...🕒 *Time:* 21:51:11✅ *CDC Real-Time Monitoring System*
+--------------------
+Date: 11/5/2026
+Time: 22:0
+Phone Number: +201289910575
+Message: 🚨 *SECURITY ALERT | تنبيه أمني*⚠️ *High Value Transaction Detected*⚠️ *تم رصد عملية بمبلغ كبير*💰 *Amount:* 55,000.00 EGP💰 *المبلغ:* 55,000.00 ج.م👤 *User:* shehab_admin🆔 *ID:* 02927f12...🕒 *Time:* 22:00:19✅ *CDC Real-Time Monitoring System*
+--------------------
