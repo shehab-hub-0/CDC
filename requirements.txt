@@ -11,5 +11,5 @@ pytest
 # static analysis & Linting
 flake8
 bandit
+# styling
 black
-isort==5.13.2
