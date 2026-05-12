@@ -1,7 +1,7 @@
 [tool.black]
 line-length = 127
 target-version = ['py39']
-extend-exclude = 'scripts/setup_pipeline.py'
+force-exclude = '.*setup_pipeline\.py'
 include = '\.pyi?$'
 
 [tool.isort]
