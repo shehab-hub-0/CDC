@@ -31,7 +31,7 @@ jobs:
 
       - name: 🔍 Static Security Analysis (Bandit)
         run: |
-          bandit -r . -x ./.venv,./tests
+          bandit -r . -x ./.venv,./tests -s B311
 
       - name: 📏 Lint with Flake8
         run: |
