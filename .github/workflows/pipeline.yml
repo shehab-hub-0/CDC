@@ -26,6 +26,7 @@ jobs:
 
       - name: 📝 Check Code Formatting (Isort/Black)
         run: |
+          isort --diff .
           isort --check-only .
           black --check .
 
