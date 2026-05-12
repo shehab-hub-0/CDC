@@ -1,19 +1,22 @@
-from pyspark.sql import SparkSession
-from pyspark.sql.functions import from_json, col, when, current_timestamp, lit
-from pyspark.sql.types import StructType, StructField, StringType, DoubleType, TimestampType
 import os
+
 from dotenv import load_dotenv
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col, current_timestamp, from_json, lit, when
+from pyspark.sql.types import (DoubleType, StringType, StructField, StructType,
+                               TimestampType)
 
 # Load environment variables
 load_dotenv()
 
 import smtplib
-from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-import requests
-from requests.auth import HTTPBasicAuth
+from email.mime.text import MIMEText
+
 import great_expectations as gx
+import requests
 from great_expectations.core.batch import RuntimeBatchRequest
+from requests.auth import HTTPBasicAuth
 
 # Configuration from .env
 KAFKA_SERVERS = os.getenv("KAFKA_BOOTSTRAP_SERVERS")

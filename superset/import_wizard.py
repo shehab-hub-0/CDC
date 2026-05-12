@@ -25,50 +25,55 @@ import uuid
 
 import yaml
 
-
 # ─────────────────────────────────────────────────────────────
 #  SCHEMA
 # ─────────────────────────────────────────────────────────────
 
 METRICS = [
-    {"metric_name": "count",             "expression": "COUNT(*)"},
-    {"metric_name": "sum_amount",        "expression": "SUM(transaction_amount)"},
-    {"metric_name": "avg_amount",        "expression": "AVG(transaction_amount)"},
-    {"metric_name": "max_amount",        "expression": "MAX(transaction_amount)"},
-    {"metric_name": "min_amount",        "expression": "MIN(transaction_amount)"},
-    {"metric_name": "sum_fee",           "expression": "SUM(fee)"},
-    {"metric_name": "avg_fee",           "expression": "AVG(fee)"},
-    {"metric_name": "avg_risk_score",    "expression": "AVG(risk_score)"},
-    {"metric_name": "max_risk_score",    "expression": "MAX(risk_score)"},
-    {"metric_name": "count_vip",         "expression": "SUM(is_vip)"},
-    {"metric_name": "avg_balance_delta", "expression": "AVG(balance_after - balance_before)"},
-    {"metric_name": "sum_balance_delta", "expression": "SUM(balance_after - balance_before)"},
+    {"metric_name": "count", "expression": "COUNT(*)"},
+    {"metric_name": "sum_amount", "expression": "SUM(transaction_amount)"},
+    {"metric_name": "avg_amount", "expression": "AVG(transaction_amount)"},
+    {"metric_name": "max_amount", "expression": "MAX(transaction_amount)"},
+    {"metric_name": "min_amount", "expression": "MIN(transaction_amount)"},
+    {"metric_name": "sum_fee", "expression": "SUM(fee)"},
+    {"metric_name": "avg_fee", "expression": "AVG(fee)"},
+    {"metric_name": "avg_risk_score", "expression": "AVG(risk_score)"},
+    {"metric_name": "max_risk_score", "expression": "MAX(risk_score)"},
+    {"metric_name": "count_vip", "expression": "SUM(is_vip)"},
+    {
+        "metric_name": "avg_balance_delta",
+        "expression": "AVG(balance_after - balance_before)",
+    },
+    {
+        "metric_name": "sum_balance_delta",
+        "expression": "SUM(balance_after - balance_before)",
+    },
 ]
 
 COLUMNS = [
-    {"column_name": "transaction_id",        "type": "VARCHAR",   "is_dttm": False},
-    {"column_name": "account_number",        "type": "VARCHAR",   "is_dttm": False},
-    {"column_name": "customer_name",         "type": "VARCHAR",   "is_dttm": False},
-    {"column_name": "transaction_amount",    "type": "FLOAT",     "is_dttm": False},
-    {"column_name": "currency",              "type": "VARCHAR",   "is_dttm": False},
-    {"column_name": "transaction_type",      "type": "VARCHAR",   "is_dttm": False},
-    {"column_name": "transaction_time",      "type": "TIMESTAMP", "is_dttm": True},
-    {"column_name": "merchant_name",         "type": "VARCHAR",   "is_dttm": False},
-    {"column_name": "city",                  "type": "VARCHAR",   "is_dttm": False},
-    {"column_name": "country",               "type": "VARCHAR",   "is_dttm": False},
-    {"column_name": "phone_number",          "type": "VARCHAR",   "is_dttm": False},
-    {"column_name": "payment_method",        "type": "VARCHAR",   "is_dttm": False},
-    {"column_name": "ip_address",            "type": "VARCHAR",   "is_dttm": False},
-    {"column_name": "is_vip",                "type": "TINYINT",   "is_dttm": False},
-    {"column_name": "category",              "type": "VARCHAR",   "is_dttm": False},
-    {"column_name": "status",                "type": "VARCHAR",   "is_dttm": False},
-    {"column_name": "fee",                   "type": "FLOAT",     "is_dttm": False},
-    {"column_name": "balance_before",        "type": "FLOAT",     "is_dttm": False},
-    {"column_name": "balance_after",         "type": "FLOAT",     "is_dttm": False},
-    {"column_name": "risk_score",            "type": "FLOAT",     "is_dttm": False},
-    {"column_name": "device_type",           "type": "VARCHAR",   "is_dttm": False},
-    {"column_name": "browser_agent",         "type": "VARCHAR",   "is_dttm": False},
-    {"column_name": "source_db_updated_at",  "type": "TIMESTAMP", "is_dttm": True},
+    {"column_name": "transaction_id", "type": "VARCHAR", "is_dttm": False},
+    {"column_name": "account_number", "type": "VARCHAR", "is_dttm": False},
+    {"column_name": "customer_name", "type": "VARCHAR", "is_dttm": False},
+    {"column_name": "transaction_amount", "type": "FLOAT", "is_dttm": False},
+    {"column_name": "currency", "type": "VARCHAR", "is_dttm": False},
+    {"column_name": "transaction_type", "type": "VARCHAR", "is_dttm": False},
+    {"column_name": "transaction_time", "type": "TIMESTAMP", "is_dttm": True},
+    {"column_name": "merchant_name", "type": "VARCHAR", "is_dttm": False},
+    {"column_name": "city", "type": "VARCHAR", "is_dttm": False},
+    {"column_name": "country", "type": "VARCHAR", "is_dttm": False},
+    {"column_name": "phone_number", "type": "VARCHAR", "is_dttm": False},
+    {"column_name": "payment_method", "type": "VARCHAR", "is_dttm": False},
+    {"column_name": "ip_address", "type": "VARCHAR", "is_dttm": False},
+    {"column_name": "is_vip", "type": "TINYINT", "is_dttm": False},
+    {"column_name": "category", "type": "VARCHAR", "is_dttm": False},
+    {"column_name": "status", "type": "VARCHAR", "is_dttm": False},
+    {"column_name": "fee", "type": "FLOAT", "is_dttm": False},
+    {"column_name": "balance_before", "type": "FLOAT", "is_dttm": False},
+    {"column_name": "balance_after", "type": "FLOAT", "is_dttm": False},
+    {"column_name": "risk_score", "type": "FLOAT", "is_dttm": False},
+    {"column_name": "device_type", "type": "VARCHAR", "is_dttm": False},
+    {"column_name": "browser_agent", "type": "VARCHAR", "is_dttm": False},
+    {"column_name": "source_db_updated_at", "type": "TIMESTAMP", "is_dttm": True},
 ]
 
 
@@ -89,257 +94,287 @@ SLICES = [
     {
         "slice_name": "💰 Total Transaction Volume",
         "viz_type": "big_number_total",
-        "params": json.dumps({
-            "metric": "sum_amount",
-            "subheader": "EGP · Last 24h",
-            "y_axis_format": ",.0f",
-            "time_range": "Last day",
-            "granularity_sqla": "transaction_time",
-        }),
+        "params": json.dumps(
+            {
+                "metric": "sum_amount",
+                "subheader": "EGP · Last 24h",
+                "y_axis_format": ",.0f",
+                "time_range": "Last day",
+                "granularity_sqla": "transaction_time",
+            }
+        ),
     },
     {
         "slice_name": "📊 Total Operations Count",
         "viz_type": "big_number_total",
-        "params": json.dumps({
-            "metric": "count",
-            "subheader": "Transactions · Last 24h",
-            "y_axis_format": ",.0f",
-            "time_range": "Last day",
-            "granularity_sqla": "transaction_time",
-        }),
+        "params": json.dumps(
+            {
+                "metric": "count",
+                "subheader": "Transactions · Last 24h",
+                "y_axis_format": ",.0f",
+                "time_range": "Last day",
+                "granularity_sqla": "transaction_time",
+            }
+        ),
     },
     {
         "slice_name": "💳 Average Transaction Amount",
         "viz_type": "big_number_total",
-        "params": json.dumps({
-            "metric": "avg_amount",
-            "subheader": "EGP per Operation",
-            "y_axis_format": ",.2f",
-            "time_range": "Last day",
-            "granularity_sqla": "transaction_time",
-        }),
+        "params": json.dumps(
+            {
+                "metric": "avg_amount",
+                "subheader": "EGP per Operation",
+                "y_axis_format": ",.2f",
+                "time_range": "Last day",
+                "granularity_sqla": "transaction_time",
+            }
+        ),
     },
     {
         "slice_name": "⚠️ Average Risk Score",
         "viz_type": "big_number_total",
-        "params": json.dumps({
-            "metric": "avg_risk_score",
-            "subheader": "Range: 0 → 1",
-            "y_axis_format": ".3f",
-            "time_range": "Last day",
-            "granularity_sqla": "transaction_time",
-        }),
+        "params": json.dumps(
+            {
+                "metric": "avg_risk_score",
+                "subheader": "Range: 0 → 1",
+                "y_axis_format": ".3f",
+                "time_range": "Last day",
+                "granularity_sqla": "transaction_time",
+            }
+        ),
     },
     {
         "slice_name": "💸 Total Fees Collected",
         "viz_type": "big_number_total",
-        "params": json.dumps({
-            "metric": "sum_fee",
-            "subheader": "EGP · Last 24h",
-            "y_axis_format": ",.0f",
-            "time_range": "Last day",
-            "granularity_sqla": "transaction_time",
-        }),
+        "params": json.dumps(
+            {
+                "metric": "sum_fee",
+                "subheader": "EGP · Last 24h",
+                "y_axis_format": ",.0f",
+                "time_range": "Last day",
+                "granularity_sqla": "transaction_time",
+            }
+        ),
     },
-
     # ── Row 2: Donuts ─────────────────────────────────────────
     {
         "slice_name": "Transaction Type Distribution",
         "viz_type": "pie",
-        "params": json.dumps({
-            "metric": "count",
-            "groupby": ["transaction_type"],
-            "time_range": "Last day",
-            "granularity_sqla": "transaction_time",
-            "donut": True,
-            "show_labels": True,
-            "show_legend": True,
-            "label_type": "key_percent",
-            "innerRadius": 40,
-            "outerRadius": 70,
-        }),
+        "params": json.dumps(
+            {
+                "metric": "count",
+                "groupby": ["transaction_type"],
+                "time_range": "Last day",
+                "granularity_sqla": "transaction_time",
+                "donut": True,
+                "show_labels": True,
+                "show_legend": True,
+                "label_type": "key_percent",
+                "innerRadius": 40,
+                "outerRadius": 70,
+            }
+        ),
     },
     {
         "slice_name": "Transaction Status Distribution",
         "viz_type": "pie",
-        "params": json.dumps({
-            "metric": "count",
-            "groupby": ["status"],
-            "time_range": "Last day",
-            "granularity_sqla": "transaction_time",
-            "donut": True,
-            "show_labels": True,
-            "show_legend": True,
-            "label_type": "key_percent",
-            "innerRadius": 40,
-            "outerRadius": 70,
-        }),
+        "params": json.dumps(
+            {
+                "metric": "count",
+                "groupby": ["status"],
+                "time_range": "Last day",
+                "granularity_sqla": "transaction_time",
+                "donut": True,
+                "show_labels": True,
+                "show_legend": True,
+                "label_type": "key_percent",
+                "innerRadius": 40,
+                "outerRadius": 70,
+            }
+        ),
     },
-
     # ── Row 3: Time-series lines ──────────────────────────────
     {
         "slice_name": "Transaction Amount Over Time",
         "viz_type": "echarts_timeseries_line",
-        "params": json.dumps({
-            "metrics": ["sum_amount"],
-            "groupby": [],
-            "time_range": "Last day",
-            "granularity_sqla": "transaction_time",
-            "x_axis": "transaction_time",
-            "series_type": "line",
-            "smooth": True,
-            "area": False,
-            "show_value": False,
-            "zoomable": True,
-            "rich_tooltip": True,
-            "y_axis_format": ",.0f",
-        }),
+        "params": json.dumps(
+            {
+                "metrics": ["sum_amount"],
+                "groupby": [],
+                "time_range": "Last day",
+                "granularity_sqla": "transaction_time",
+                "x_axis": "transaction_time",
+                "series_type": "line",
+                "smooth": True,
+                "area": False,
+                "show_value": False,
+                "zoomable": True,
+                "rich_tooltip": True,
+                "y_axis_format": ",.0f",
+            }
+        ),
     },
     {
         "slice_name": "Cumulative Volume Growth",
         "viz_type": "echarts_timeseries_line",
-        "params": json.dumps({
-            "metrics": ["sum_amount"],
-            "groupby": [],
-            "time_range": "Last day",
-            "granularity_sqla": "transaction_time",
-            "x_axis": "transaction_time",
-            "series_type": "line",
-            "area": True,
-            "smooth": True,
-            "rolling_type": "sum",
-            "zoomable": True,
-            "show_value": False,
-            "y_axis_format": ",.0f",
-        }),
+        "params": json.dumps(
+            {
+                "metrics": ["sum_amount"],
+                "groupby": [],
+                "time_range": "Last day",
+                "granularity_sqla": "transaction_time",
+                "x_axis": "transaction_time",
+                "series_type": "line",
+                "area": True,
+                "smooth": True,
+                "rolling_type": "sum",
+                "zoomable": True,
+                "show_value": False,
+                "y_axis_format": ",.0f",
+            }
+        ),
     },
-
     # ── Row 4: Categorical bars ───────────────────────────────
     #  PATTERN: x_axis = dimension, metrics = [...], NO groupby
     #  granularity_sqla = None, time_range = "No filter"
     {
         "slice_name": "Top 10 Merchants by Volume",
         "viz_type": "echarts_timeseries_bar",
-        "params": json.dumps({
-            "metrics": ["sum_amount"],
-            "x_axis": "merchant_name",
-            "granularity_sqla": None,
-            "time_range": "No filter",
-            "row_limit": 10,
-            "order_desc": True,
-            "show_legend": False,
-            "show_value": True,
-            "y_axis_format": ",.0f",
-            "xAxisTitle": "Merchant",
-            "yAxisTitle": "Total EGP",
-            "orientation": "horizontal",
-        }),
+        "params": json.dumps(
+            {
+                "metrics": ["sum_amount"],
+                "x_axis": "merchant_name",
+                "granularity_sqla": None,
+                "time_range": "No filter",
+                "row_limit": 10,
+                "order_desc": True,
+                "show_legend": False,
+                "show_value": True,
+                "y_axis_format": ",.0f",
+                "xAxisTitle": "Merchant",
+                "yAxisTitle": "Total EGP",
+                "orientation": "horizontal",
+            }
+        ),
     },
     {
         "slice_name": "Transactions by Category",
         "viz_type": "echarts_timeseries_bar",
-        "params": json.dumps({
-            "metrics": ["count"],
-            "x_axis": "category",
-            "granularity_sqla": None,
-            "time_range": "No filter",
-            "row_limit": 15,
-            "order_desc": True,
-            "show_legend": False,
-            "show_value": True,
-            "xAxisTitle": "Category",
-            "yAxisTitle": "Count",
-        }),
+        "params": json.dumps(
+            {
+                "metrics": ["count"],
+                "x_axis": "category",
+                "granularity_sqla": None,
+                "time_range": "No filter",
+                "row_limit": 15,
+                "order_desc": True,
+                "show_legend": False,
+                "show_value": True,
+                "xAxisTitle": "Category",
+                "yAxisTitle": "Count",
+            }
+        ),
     },
-
     # ── Row 5: Time-series bar + payment categorical ──────────
     {
         "slice_name": "Daily Transaction Count",
         "viz_type": "echarts_timeseries_bar",
-        "params": json.dumps({
-            "metrics": ["count"],
-            "granularity_sqla": "transaction_time",
-            "time_range": "Last 7 days",
-            "x_axis": "transaction_time",
-            "show_legend": False,
-            "zoomable": True,
-            "show_value": False,
-            "rich_tooltip": True,
-        }),
+        "params": json.dumps(
+            {
+                "metrics": ["count"],
+                "granularity_sqla": "transaction_time",
+                "time_range": "Last 7 days",
+                "x_axis": "transaction_time",
+                "show_legend": False,
+                "zoomable": True,
+                "show_value": False,
+                "rich_tooltip": True,
+            }
+        ),
     },
     {
         "slice_name": "Payment Method Breakdown",
         "viz_type": "echarts_timeseries_bar",
-        "params": json.dumps({
-            "metrics": ["count", "sum_amount"],
-            "x_axis": "payment_method",
-            "granularity_sqla": None,
-            "time_range": "No filter",
-            "row_limit": 10,
-            "order_desc": True,
-            "show_legend": True,
-            "show_value": False,
-            "xAxisTitle": "Payment Method",
-        }),
+        "params": json.dumps(
+            {
+                "metrics": ["count", "sum_amount"],
+                "x_axis": "payment_method",
+                "granularity_sqla": None,
+                "time_range": "No filter",
+                "row_limit": 10,
+                "order_desc": True,
+                "show_legend": True,
+                "show_value": False,
+                "xAxisTitle": "Payment Method",
+            }
+        ),
     },
-
     # ── Row 6: Risk bar + High-risk table ─────────────────────
     {
         "slice_name": "Avg Risk Score by Category",
         "viz_type": "echarts_timeseries_bar",
-        "params": json.dumps({
-            "metrics": ["avg_risk_score"],
-            "x_axis": "category",
-            "granularity_sqla": None,
-            "time_range": "No filter",
-            "row_limit": 15,
-            "order_desc": True,
-            "show_legend": False,
-            "show_value": True,
-            "y_axis_format": ".3f",
-            "xAxisTitle": "Category",
-            "yAxisTitle": "Avg Risk Score",
-        }),
+        "params": json.dumps(
+            {
+                "metrics": ["avg_risk_score"],
+                "x_axis": "category",
+                "granularity_sqla": None,
+                "time_range": "No filter",
+                "row_limit": 15,
+                "order_desc": True,
+                "show_legend": False,
+                "show_value": True,
+                "y_axis_format": ".3f",
+                "xAxisTitle": "Category",
+                "yAxisTitle": "Avg Risk Score",
+            }
+        ),
     },
     {
         "slice_name": "🚨 High Risk Transactions",
         "viz_type": "table",
-        "params": json.dumps({
-            "query_mode": "aggregate",
-            "groupby": [
-                "transaction_id", "customer_name", "category",
-                "status", "merchant_name", "city",
-                "payment_method", "device_type",
-            ],
-            "metrics": ["sum_amount", "avg_risk_score", "count"],
-            "time_range": "Last day",
-            "granularity_sqla": "transaction_time",
-            "row_limit": 200,
-            "order_desc": True,
-            "adhoc_filters": [
-                {
-                    "expressionType": "SIMPLE",
-                    "subject": "risk_score",
-                    "operator": ">=",
-                    "comparator": "0.7",
-                    "clause": "WHERE",
-                }
-            ],
-            "include_search": True,
-            "page_length": 25,
-            "show_cell_bars": True,
-            "align_pn": True,
-            "color_pn": True,
-            "column_config": {
-                "avg_risk_score": {
-                    "colorPositiveNegative": True,
-                    "d3NumberFormat": ".3f",
+        "params": json.dumps(
+            {
+                "query_mode": "aggregate",
+                "groupby": [
+                    "transaction_id",
+                    "customer_name",
+                    "category",
+                    "status",
+                    "merchant_name",
+                    "city",
+                    "payment_method",
+                    "device_type",
+                ],
+                "metrics": ["sum_amount", "avg_risk_score", "count"],
+                "time_range": "Last day",
+                "granularity_sqla": "transaction_time",
+                "row_limit": 200,
+                "order_desc": True,
+                "adhoc_filters": [
+                    {
+                        "expressionType": "SIMPLE",
+                        "subject": "risk_score",
+                        "operator": ">=",
+                        "comparator": "0.7",
+                        "clause": "WHERE",
+                    }
+                ],
+                "include_search": True,
+                "page_length": 25,
+                "show_cell_bars": True,
+                "align_pn": True,
+                "color_pn": True,
+                "column_config": {
+                    "avg_risk_score": {
+                        "colorPositiveNegative": True,
+                        "d3NumberFormat": ".3f",
+                    },
+                    "sum_amount": {
+                        "d3NumberFormat": ",.0f",
+                    },
                 },
-                "sum_amount": {
-                    "d3NumberFormat": ",.0f",
-                },
-            },
-        }),
+            }
+        ),
     },
 ]
 
@@ -348,13 +383,15 @@ SLICES = [
 #  LAYOUT
 # ─────────────────────────────────────────────────────────────
 
+
 def build_position(ids: dict) -> dict:
     pos = {
         "DASHBOARD_VERSION_KEY": "v2",
-        "ROOT_ID":  {"children": ["GRID_ID"], "id": "ROOT_ID",  "type": "ROOT"},
-        "GRID_ID":  {
-            "children": ["ROW-1","ROW-2","ROW-3","ROW-4","ROW-5","ROW-6"],
-            "id": "GRID_ID", "type": "GRID",
+        "ROOT_ID": {"children": ["GRID_ID"], "id": "ROOT_ID", "type": "ROOT"},
+        "GRID_ID": {
+            "children": ["ROW-1", "ROW-2", "ROW-3", "ROW-4", "ROW-5", "ROW-6"],
+            "id": "GRID_ID",
+            "type": "GRID",
         },
     }
 
@@ -371,16 +408,26 @@ def build_position(ids: dict) -> dict:
     # Row 1 — 5 KPIs  (4 × 5 = 20 cols; last one gets 4)
     r1 = [add(i, 4, 22) for i in range(1, 6)]
     pos["ROW-1"] = {
-        "children": r1, "id": "ROW-1", "type": "ROW",
+        "children": r1,
+        "id": "ROW-1",
+        "type": "ROW",
         "meta": {"background": "BACKGROUND_TRANSPARENT"},
     }
 
     # Rows 2-6 — 2 × 12
-    rows = [(6,7,50,50),(8,9,55,55),(10,11,55,55),(12,13,55,55),(14,15,55,80)]
+    rows = [
+        (6, 7, 50, 50),
+        (8, 9, 55, 55),
+        (10, 11, 55, 55),
+        (12, 13, 55, 55),
+        (14, 15, 55, 80),
+    ]
     for row_num, (a, b, ha, hb) in enumerate(rows, start=2):
         ca, cb = add(a, 12, ha), add(b, 12, hb)
         pos[f"ROW-{row_num}"] = {
-            "children": [ca, cb], "id": f"ROW-{row_num}", "type": "ROW",
+            "children": [ca, cb],
+            "id": f"ROW-{row_num}",
+            "type": "ROW",
             "meta": {"background": "BACKGROUND_TRANSPARENT"},
         }
     return pos
@@ -390,6 +437,7 @@ def build_position(ids: dict) -> dict:
 #  DASHBOARD METADATA  (colors + 6 native filters)
 # ─────────────────────────────────────────────────────────────
 
+
 def build_metadata(dataset_id: int) -> str:
     meta = {
         "timed_refresh_immune_slices": [],
@@ -398,16 +446,16 @@ def build_metadata(dataset_id: int) -> str:
         "default_filters": "{}",
         "color_scheme": "supersetColors",
         "label_colors": {
-            "completed":  "#4CAF50",
-            "COMPLETED":  "#4CAF50",
-            "pending":    "#FF9800",
-            "PENDING":    "#FF9800",
-            "failed":     "#F44336",
-            "FAILED":     "#F44336",
-            "purchase":   "#2196F3",
-            "transfer":   "#00BCD4",
+            "completed": "#4CAF50",
+            "COMPLETED": "#4CAF50",
+            "pending": "#FF9800",
+            "PENDING": "#FF9800",
+            "failed": "#F44336",
+            "FAILED": "#F44336",
+            "purchase": "#2196F3",
+            "transfer": "#00BCD4",
             "withdrawal": "#FF5722",
-            "refund":     "#9C27B0",
+            "refund": "#9C27B0",
         },
         "native_filter_configuration": [
             {
@@ -439,7 +487,9 @@ def build_metadata(dataset_id: int) -> str:
                 "id": "NATIVE_FILTER-type",
                 "name": "💳 Transaction Type",
                 "filterType": "filter_select",
-                "targets": [{"column": {"name": "transaction_type"}, "datasetId": dataset_id}],
+                "targets": [
+                    {"column": {"name": "transaction_type"}, "datasetId": dataset_id}
+                ],
                 "defaultDataMask": {"filterState": {"value": []}},
                 "controlValues": {
                     "enableEmptyFilter": False,
@@ -500,15 +550,18 @@ def build_metadata(dataset_id: int) -> str:
 #  UPSERT HELPERS
 # ─────────────────────────────────────────────────────────────
 
+
 def upsert_metrics(session, table_obj, SqlMetric):
     existing = {m.metric_name for m in table_obj.metrics}
     added = 0
     for met in METRICS:
         if met["metric_name"] not in existing:
-            table_obj.metrics.append(SqlMetric(
-                metric_name=met["metric_name"],
-                expression=met["expression"],
-            ))
+            table_obj.metrics.append(
+                SqlMetric(
+                    metric_name=met["metric_name"],
+                    expression=met["expression"],
+                )
+            )
             added += 1
     if added:
         session.commit()
@@ -522,11 +575,13 @@ def upsert_columns(session, table_obj, TableColumn):
     added = 0
     for col in COLUMNS:
         if col["column_name"] not in existing:
-            table_obj.columns.append(TableColumn(
-                column_name=col["column_name"],
-                type=col["type"],
-                is_dttm=col.get("is_dttm", False),
-            ))
+            table_obj.columns.append(
+                TableColumn(
+                    column_name=col["column_name"],
+                    type=col["type"],
+                    is_dttm=col.get("is_dttm", False),
+                )
+            )
             added += 1
     if added:
         session.commit()
@@ -536,6 +591,7 @@ def upsert_columns(session, table_obj, TableColumn):
 # ─────────────────────────────────────────────────────────────
 #  MAIN
 # ─────────────────────────────────────────────────────────────
+
 
 def import_all():
     print("🚀 Financial Dashboard Import — v4 (Superset 5.x compatible)")
@@ -560,10 +616,11 @@ def import_all():
         print("❌ Could not connect. Aborting.")
         return
 
+    from superset.connectors.sqla.models import (SqlaTable, SqlMetric,
+                                                 TableColumn)
     from superset.models.core import Database
-    from superset.connectors.sqla.models import SqlaTable, TableColumn, SqlMetric
-    from superset.models.slice import Slice
     from superset.models.dashboard import Dashboard
+    from superset.models.slice import Slice
 
     # ── Load YAML ─────────────────────────────────────────────
     config_path = "/app/SUPERSET_DASHBOARD_PRO.yaml"
@@ -583,9 +640,11 @@ def import_all():
 
         # ── Database ──────────────────────────────────────────
         print(f"\n📦 Database: {db_data['database_name']}")
-        target_db = db.session.query(Database).filter_by(
-            database_name=db_data["database_name"]
-        ).first()
+        target_db = (
+            db.session.query(Database)
+            .filter_by(database_name=db_data["database_name"])
+            .first()
+        )
 
         if not target_db:
             try:
@@ -609,9 +668,11 @@ def import_all():
         target_table = None
         for tbl_data in db_data.get("tables", []):
             print(f"\n📋 Dataset: {tbl_data['table_name']}")
-            target_table = db.session.query(SqlaTable).filter_by(
-                table_name=tbl_data["table_name"]
-            ).first()
+            target_table = (
+                db.session.query(SqlaTable)
+                .filter_by(table_name=tbl_data["table_name"])
+                .first()
+            )
 
             if not target_table:
                 try:
@@ -624,18 +685,24 @@ def import_all():
                     db.session.add(target_table)
                     db.session.flush()
                     for col in COLUMNS:
-                        target_table.columns.append(TableColumn(
-                            column_name=col["column_name"],
-                            type=col["type"],
-                            is_dttm=col.get("is_dttm", False),
-                        ))
+                        target_table.columns.append(
+                            TableColumn(
+                                column_name=col["column_name"],
+                                type=col["type"],
+                                is_dttm=col.get("is_dttm", False),
+                            )
+                        )
                     for met in METRICS:
-                        target_table.metrics.append(SqlMetric(
-                            metric_name=met["metric_name"],
-                            expression=met["expression"],
-                        ))
+                        target_table.metrics.append(
+                            SqlMetric(
+                                metric_name=met["metric_name"],
+                                expression=met["expression"],
+                            )
+                        )
                     db.session.commit()
-                    print(f"  ✅ Created with {len(COLUMNS)} columns & {len(METRICS)} metrics.")
+                    print(
+                        f"  ✅ Created with {len(COLUMNS)} columns & {len(METRICS)} metrics."
+                    )
                 except Exception as e:
                     db.session.rollback()
                     print(f"  ❌ {e}")
@@ -655,9 +722,11 @@ def import_all():
 
         for idx, s_def in enumerate(SLICES, start=1):
             try:
-                existing = db.session.query(Slice).filter_by(
-                    slice_name=s_def["slice_name"]
-                ).first()
+                existing = (
+                    db.session.query(Slice)
+                    .filter_by(slice_name=s_def["slice_name"])
+                    .first()
+                )
                 if existing:
                     db.session.delete(existing)
                     db.session.commit()
@@ -692,17 +761,21 @@ def import_all():
 
         for dash_data in data.get("dashboards", []):
             try:
-                existing_dash = db.session.query(Dashboard).filter_by(
-                    dashboard_title=dash_data["dashboard_title"]
-                ).first()
+                existing_dash = (
+                    db.session.query(Dashboard)
+                    .filter_by(dashboard_title=dash_data["dashboard_title"])
+                    .first()
+                )
                 if existing_dash:
                     db.session.delete(existing_dash)
                     db.session.commit()
                     print("  🗑️  Removed old dashboard.")
 
-                all_slices = db.session.query(Slice).filter(
-                    Slice.id.in_(list(created_slices.values()))
-                ).all()
+                all_slices = (
+                    db.session.query(Slice)
+                    .filter(Slice.id.in_(list(created_slices.values())))
+                    .all()
+                )
 
                 dash = Dashboard(
                     dashboard_title=dash_data["dashboard_title"],
@@ -717,7 +790,9 @@ def import_all():
 
                 print(f"\n  🎉 Dashboard '{dash_data['dashboard_title']}' created!")
                 print(f"     Charts  : {len(all_slices)}")
-                print(f"     Filters : 6 native filters (time, status, type, category, city, vip)")
+                print(
+                    f"     Filters : 6 native filters (time, status, type, category, city, vip)"
+                )
                 print(f"     Refresh : every 5 seconds")
 
             except Exception as e:

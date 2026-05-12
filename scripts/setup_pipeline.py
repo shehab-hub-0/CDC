@@ -1,7 +1,8 @@
 import os
 import time
-import requests
+
 import psycopg2
+import requests
 from clickhouse_driver import Client
 from dotenv import load_dotenv
 
@@ -15,22 +16,29 @@ POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD", "postgres")
 POSTGRES_HOST = os.getenv("POSTGRES_HOST", "localhost")
 POSTGRES_PORT = os.getenv("POSTGRES_PORT", "5432")
 
-CH_HOST = "localhost" # Running from host
-CH_PORT = os.getenv("CLICKHOUSE_NATIVE_PORT", "9000") # Native port
+CH_HOST = "localhost"  # Running from host
+CH_PORT = os.getenv("CLICKHOUSE_NATIVE_PORT", "9000")  # Native port
 CH_USER = os.getenv("CLICKHOUSE_USER", "admin")
 CH_PASS = os.getenv("CLICKHOUSE_PASSWORD", "admin")
 CH_DB = os.getenv("CLICKHOUSE_DB", "financial_dw")
 
 DEBEZIUM_URL = "http://localhost:8083/connectors"
 
+
 def setup_postgres():
     print("Setting up PostgreSQL...")
     try:
         # 1. Connect to default postgres DB to create our app DBs
-        conn = psycopg2.connect(dbname="postgres", user=POSTGRES_USER, password=POSTGRES_PASSWORD, host=POSTGRES_HOST, port=POSTGRES_PORT)
+        conn = psycopg2.connect(
+            dbname="postgres",
+            user=POSTGRES_USER,
+            password=POSTGRES_PASSWORD,
+            host=POSTGRES_HOST,
+            port=POSTGRES_PORT,
+        )
         conn.autocommit = True
         cur = conn.cursor()
-        
+
         # Create Financial DB if not exists
         cur.execute(f"SELECT 1 FROM pg_database WHERE datname='{POSTGRES_DB}'")
         if not cur.fetchone():
@@ -42,15 +50,21 @@ def setup_postgres():
         if not cur.fetchone():
             cur.execute("CREATE DATABASE superset_metadata")
             print("[OK] Created Database: superset_metadata")
-        
+
         cur.close()
         conn.close()
 
         # 2. Connect to our app DB to create table
-        conn = psycopg2.connect(dbname=POSTGRES_DB, user=POSTGRES_USER, password=POSTGRES_PASSWORD, host=POSTGRES_HOST, port=POSTGRES_PORT)
+        conn = psycopg2.connect(
+            dbname=POSTGRES_DB,
+            user=POSTGRES_USER,
+            password=POSTGRES_PASSWORD,
+            host=POSTGRES_HOST,
+            port=POSTGRES_PORT,
+        )
         conn.autocommit = True
         cur = conn.cursor()
-        
+
         cur.execute("""
             CREATE TABLE IF NOT EXISTS transactions (
                 transaction_id VARCHAR(255) PRIMARY KEY,
@@ -79,19 +93,22 @@ def setup_postgres():
             )
         """)
         print("[OK] Created Table: transactions")
-        
+
         # Clear old replication slots to prevent Debezium conflicts
-        cur.execute("SELECT pg_drop_replication_slot('debezium') WHERE EXISTS (SELECT 1 FROM pg_replication_slots WHERE slot_name='debezium')")
+        cur.execute(
+            "SELECT pg_drop_replication_slot('debezium') WHERE EXISTS (SELECT 1 FROM pg_replication_slots WHERE slot_name='debezium')"
+        )
         print("[OK] Cleaned old replication slots")
-        
+
         cur.close()
         conn.close()
     except Exception as e:
         print(f"[ERROR] Postgres Error: {e}")
 
+
 def setup_debezium():
     print("Setting up Debezium Connector...")
-    connector_name = "financial-connector-v4" # New version for setup
+    connector_name = "financial-connector-v4"  # New version for setup
     config = {
         "name": connector_name,
         "config": {
@@ -105,15 +122,15 @@ def setup_debezium():
             "table.include.list": "public.transactions",
             "plugin.name": "pgoutput",
             "snapshot.mode": "always",
-            "decimal.handling.mode": "double"
-        }
+            "decimal.handling.mode": "double",
+        },
     }
-    
+
     try:
         # Delete old ones first
         requests.delete(f"{DEBEZIUM_URL}/{connector_name}")
         time.sleep(1)
-        
+
         # Register new
         response = requests.post(DEBEZIUM_URL, json=config)
         if response.status_code in [200, 201]:
@@ -123,15 +140,16 @@ def setup_debezium():
     except Exception as e:
         print(f"[ERROR] Debezium Error: {e}")
 
+
 def setup_clickhouse():
     print("Setting up ClickHouse DWH...")
     try:
         # Use Native port 9000 for clickhouse-driver
         client = Client(host=CH_HOST, port=9000, user=CH_USER, password=CH_PASS)
-        
+
         client.execute(f"CREATE DATABASE IF NOT EXISTS {CH_DB}")
         client.execute(f"USE {CH_DB}")
-        
+
         client.execute("""
             CREATE TABLE IF NOT EXISTS transactions (
                 transaction_id String,
@@ -165,18 +183,22 @@ def setup_clickhouse():
     except Exception as e:
         print(f"[ERROR] ClickHouse Error: {e}")
 
+
 def setup_superset():
     print("Superset is configured to self-initialize via its entrypoint script.")
-    print("Ensure you have run 'docker compose up -d --build superset' to apply changes.")
+    print(
+        "Ensure you have run 'docker compose up -d --build superset' to apply changes."
+    )
+
 
 if __name__ == "__main__":
     print("STARTING END-TO-END PIPELINE SETUP")
-    print("="*40)
+    print("=" * 40)
     setup_postgres()
     setup_clickhouse()
     setup_debezium()
     setup_superset()
-    print("="*40)
+    print("=" * 40)
     print("ALL SYSTEMS READY!")
     print("1. Start generator: python generator/main.py")
     print("2. Start Spark Pipeline in your Notebook")

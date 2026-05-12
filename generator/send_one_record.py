@@ -1,13 +1,14 @@
-import os
-import time
 import logging
+import os
+import smtplib
+import time
+import uuid
+from datetime import datetime, timezone
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+
 import psycopg2
 import pywhatkit
-import smtplib
-import uuid
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-from datetime import datetime, timezone
 from dotenv import load_dotenv
 
 # ──────────────────────────────────────────────────────────────
@@ -15,7 +16,9 @@ from dotenv import load_dotenv
 # ──────────────────────────────────────────────────────────────
 load_dotenv()
 
-logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s"
+)
 logger = logging.getLogger(__name__)
 
 # Credentials
@@ -31,6 +34,7 @@ EMAIL_SENDER = os.getenv("EMAIL_SENDER")
 EMAIL_PASSWORD = os.getenv("EMAIL_PASSWORD")
 EMAIL_RECEIVER = os.getenv("EMAIL_RECEIVER", EMAIL_SENDER)
 
+
 def send_postgres_record():
     """Inserts one high-risk admin record into Postgres (Full v2 Schema)."""
     try:
@@ -38,10 +42,10 @@ def send_postgres_record():
             host=DB_HOST, database=DB_NAME, user=DB_USER, password=DB_PASS, port=DB_PORT
         )
         cur = conn.cursor()
-        
+
         txn_id = str(uuid.uuid4())
         amount = 55000.00
-        
+
         sql = """
             INSERT INTO transactions (
                 transaction_id, account_number, customer_name, timestamp, amount, currency,
@@ -51,15 +55,36 @@ def send_postgres_record():
                 risk_score, device_type, browser_agent, source_db_updated_at
             ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         """
-        
-        cur.execute(sql, (
-            txn_id, "ACC-ADMIN-001", ADMIN_USERNAME, datetime.now(timezone.utc), amount, "EGP",
-            "Cairo", "Egypt", "VIP-Terminal-01", "credit_card",
-            "127.0.0.1", "TRANSFER", ADMIN_PHONE, True,
-            "Investment", "SUCCESS", 50.0, 100000.0, 44950.0,
-            0.95, "Admin-Console", "Security-Module-v2", datetime.now(timezone.utc)
-        ))
-        
+
+        cur.execute(
+            sql,
+            (
+                txn_id,
+                "ACC-ADMIN-001",
+                ADMIN_USERNAME,
+                datetime.now(timezone.utc),
+                amount,
+                "EGP",
+                "Cairo",
+                "Egypt",
+                "VIP-Terminal-01",
+                "credit_card",
+                "127.0.0.1",
+                "TRANSFER",
+                ADMIN_PHONE,
+                True,
+                "Investment",
+                "SUCCESS",
+                50.0,
+                100000.0,
+                44950.0,
+                0.95,
+                "Admin-Console",
+                "Security-Module-v2",
+                datetime.now(timezone.utc),
+            ),
+        )
+
         conn.commit()
         cur.close()
         conn.close()
@@ -69,6 +94,7 @@ def send_postgres_record():
         logger.error(f"❌ Postgres Error: {e}")
         return None, None
 
+
 def send_gmail_alert(amount, txn_id):
     """Sends a professional bilingual HTML Gmail notification."""
     if not EMAIL_SENDER or not EMAIL_PASSWORD:
@@ -76,10 +102,12 @@ def send_gmail_alert(amount, txn_id):
         return
 
     try:
-        msg = MIMEMultipart('alternative')
-        msg['From'] = f"CDC Security System <{EMAIL_SENDER}>"
-        msg['To'] = EMAIL_RECEIVER
-        msg['Subject'] = f"🚨 تنبيه أمني: عملية بمبلغ كبير | Security Alert: High-Value Transaction"
+        msg = MIMEMultipart("alternative")
+        msg["From"] = f"CDC Security System <{EMAIL_SENDER}>"
+        msg["To"] = EMAIL_RECEIVER
+        msg["Subject"] = (
+            f"🚨 تنبيه أمني: عملية بمبلغ كبير | Security Alert: High-Value Transaction"
+        )
 
         html_body = f"""
         <html>
@@ -108,15 +136,16 @@ def send_gmail_alert(amount, txn_id):
             </body>
         </html>
         """
-        msg.attach(MIMEText(html_body, 'html'))
+        msg.attach(MIMEText(html_body, "html"))
 
-        server = smtplib.SMTP_SSL('smtp.gmail.com', 465)
+        server = smtplib.SMTP_SSL("smtp.gmail.com", 465)
         server.login(EMAIL_SENDER, EMAIL_PASSWORD)
         server.sendmail(EMAIL_SENDER, [EMAIL_RECEIVER], msg.as_string())
         server.quit()
         logger.info(f"📧 Email alert sent to {EMAIL_RECEIVER}!")
     except Exception as e:
         logger.error(f"❌ Gmail Error: {e}")
+
 
 def send_whatsapp_alert(amount, txn_id):
     """Sends a professional bilingual WhatsApp message."""
@@ -129,10 +158,13 @@ def send_whatsapp_alert(amount, txn_id):
             f"✅ *CDC Monitoring*"
         )
         logger.info(f"📱 Sending WhatsApp to {ADMIN_PHONE}...")
-        pywhatkit.sendwhatmsg_instantly(ADMIN_PHONE, message, wait_time=15, tab_close=True)
+        pywhatkit.sendwhatmsg_instantly(
+            ADMIN_PHONE, message, wait_time=15, tab_close=True
+        )
         logger.info("✅ WhatsApp sent!")
     except Exception as e:
         logger.error(f"❌ WhatsApp Error: {e}")
+
 
 if __name__ == "__main__":
     logger.info("🚀 Starting Full Schema Test...")
