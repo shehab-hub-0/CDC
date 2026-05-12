@@ -3,8 +3,7 @@ import os
 from dotenv import load_dotenv
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, current_timestamp, from_json, lit, when
-from pyspark.sql.types import (DoubleType, StringType, StructField, StructType,
-                               TimestampType)
+from pyspark.sql.types import DoubleType, StringType, StructField, StructType, TimestampType
 
 # Load environment variables
 load_dotenv()

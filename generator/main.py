@@ -19,9 +19,7 @@ from psycopg2 import pool
 # ──────────────────────────────────────────────────────────────
 load_dotenv()
 
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s"
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger(__name__)
 
 fake = faker.Faker()
@@ -56,11 +54,7 @@ def generate_transaction() -> dict[str, Any]:
     category = random.choice(CATEGORIES)
     txn_type = random.choice(TRANSACTION_TYPES)
 
-    fee = (
-        round(amount * random.uniform(0.001, 0.02), 2)
-        if txn_type in {"PAYMENT", "TRANSFER"}
-        else 0.0
-    )
+    fee = round(amount * random.uniform(0.001, 0.02), 2) if txn_type in {"PAYMENT", "TRANSFER"} else 0.0
     balance_before = round(random.uniform(5_000, 500_000), 2)
     balance_after = (
         round(balance_before - amount - fee, 2)

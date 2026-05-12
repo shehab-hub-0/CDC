@@ -487,9 +487,7 @@ def build_metadata(dataset_id: int) -> str:
                 "id": "NATIVE_FILTER-type",
                 "name": "💳 Transaction Type",
                 "filterType": "filter_select",
-                "targets": [
-                    {"column": {"name": "transaction_type"}, "datasetId": dataset_id}
-                ],
+                "targets": [{"column": {"name": "transaction_type"}, "datasetId": dataset_id}],
                 "defaultDataMask": {"filterState": {"value": []}},
                 "controlValues": {
                     "enableEmptyFilter": False,
@@ -639,11 +637,7 @@ def import_all():
 
         # ── Database ──────────────────────────────────────────
         print(f"\n📦 Database: {db_data['database_name']}")
-        target_db = (
-            db.session.query(Database)
-            .filter_by(database_name=db_data["database_name"])
-            .first()
-        )
+        target_db = db.session.query(Database).filter_by(database_name=db_data["database_name"]).first()
 
         if not target_db:
             try:
@@ -667,11 +661,7 @@ def import_all():
         target_table = None
         for tbl_data in db_data.get("tables", []):
             print(f"\n📋 Dataset: {tbl_data['table_name']}")
-            target_table = (
-                db.session.query(SqlaTable)
-                .filter_by(table_name=tbl_data["table_name"])
-                .first()
-            )
+            target_table = db.session.query(SqlaTable).filter_by(table_name=tbl_data["table_name"]).first()
 
             if not target_table:
                 try:
@@ -699,9 +689,7 @@ def import_all():
                             )
                         )
                     db.session.commit()
-                    print(
-                        f"  ✅ Created with {len(COLUMNS)} columns & {len(METRICS)} metrics."
-                    )
+                    print(f"  ✅ Created with {len(COLUMNS)} columns & {len(METRICS)} metrics.")
                 except Exception as e:
                     db.session.rollback()
                     print(f"  ❌ {e}")
@@ -721,11 +709,7 @@ def import_all():
 
         for idx, s_def in enumerate(SLICES, start=1):
             try:
-                existing = (
-                    db.session.query(Slice)
-                    .filter_by(slice_name=s_def["slice_name"])
-                    .first()
-                )
+                existing = db.session.query(Slice).filter_by(slice_name=s_def["slice_name"]).first()
                 if existing:
                     db.session.delete(existing)
                     db.session.commit()
@@ -760,21 +744,13 @@ def import_all():
 
         for dash_data in data.get("dashboards", []):
             try:
-                existing_dash = (
-                    db.session.query(Dashboard)
-                    .filter_by(dashboard_title=dash_data["dashboard_title"])
-                    .first()
-                )
+                existing_dash = db.session.query(Dashboard).filter_by(dashboard_title=dash_data["dashboard_title"]).first()
                 if existing_dash:
                     db.session.delete(existing_dash)
                     db.session.commit()
                     print("  🗑️  Removed old dashboard.")
 
-                all_slices = (
-                    db.session.query(Slice)
-                    .filter(Slice.id.in_(list(created_slices.values())))
-                    .all()
-                )
+                all_slices = db.session.query(Slice).filter(Slice.id.in_(list(created_slices.values()))).all()
 
                 dash = Dashboard(
                     dashboard_title=dash_data["dashboard_title"],
@@ -789,9 +765,7 @@ def import_all():
 
                 print(f"\n  🎉 Dashboard '{dash_data['dashboard_title']}' created!")
                 print(f"     Charts  : {len(all_slices)}")
-                print(
-                    f"     Filters : 6 native filters (time, status, type, category, city, vip)"
-                )
+                print(f"     Filters : 6 native filters (time, status, type, category, city, vip)")
                 print(f"     Refresh : every 5 seconds")
 
             except Exception as e:

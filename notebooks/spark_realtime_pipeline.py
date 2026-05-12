@@ -50,8 +50,7 @@ CLICKHOUSE_HOST: str = os.getenv("CLICKHOUSE_HOST", "clickhouse")
 CLICKHOUSE_USER: str = os.getenv("CLICKHOUSE_USER", "default")
 CLICKHOUSE_PASSWORD: str = os.getenv("CLICKHOUSE_PASSWORD", "")
 CLICKHOUSE_INSERT_URL: str = (
-    f"http://{CLICKHOUSE_HOST}:8123/"
-    "?query=INSERT%20INTO%20financial_dw.transactions%20FORMAT%20JSONEachRow"
+    f"http://{CLICKHOUSE_HOST}:8123/" "?query=INSERT%20INTO%20financial_dw.transactions%20FORMAT%20JSONEachRow"
 )
 
 # ──────────────────────────────────────────────────────────────
@@ -253,10 +252,7 @@ def send_email_alert(row_dict: dict) -> None:
     row_dict["transaction_amount"] = row_dict.get("transaction_amount") or 0.0
     row_dict["balance_after"] = row_dict.get("balance_after") or 0.0
 
-    subject = (
-        f"BANK ALERT: {row_dict['transaction_type']} of "
-        f"{row_dict['transaction_amount']} {row_dict['currency']}"
-    )
+    subject = f"BANK ALERT: {row_dict['transaction_type']} of " f"{row_dict['transaction_amount']} {row_dict['currency']}"
     html_body = _EMAIL_TEMPLATE.format(**row_dict)
 
     msg = MIMEMultipart()
@@ -288,9 +284,7 @@ def write_to_clickhouse(pandas_df) -> None:
     # Formatting dates for ClickHouse compatibility
     for col_name in ["transaction_time", "source_db_updated_at"]:
         if col_name in pandas_df.columns:
-            pandas_df[col_name] = (
-                pandas_df[col_name].dt.strftime("%Y-%m-%d %H:%M:%S.%f").str[:-3]
-            )
+            pandas_df[col_name] = pandas_df[col_name].dt.strftime("%Y-%m-%d %H:%M:%S.%f").str[:-3]
 
     json_payload = pandas_df.to_json(orient="records", date_format="iso", lines=True)
     try:
@@ -348,11 +342,7 @@ def main() -> None:
     raw_stream = read_kafka_stream(spark)
     final_stream = apply_transformations(raw_stream)
 
-    query = (
-        final_stream.writeStream.foreachBatch(process_batch)
-        .outputMode("update")
-        .start()
-    )
+    query = final_stream.writeStream.foreachBatch(process_batch).outputMode("update").start()
 
     logger.info("Bank-Grade CDC pipeline is running...")
     spark.streams.awaitAnyTermination()

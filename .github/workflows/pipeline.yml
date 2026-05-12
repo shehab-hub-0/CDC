@@ -24,10 +24,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install flake8 bandit black isort
 
-      - name: 📝 Check Code Formatting (Black/Isort)
+      - name: 📝 Check Code Formatting (Isort/Black)
         run: |
-          black --check .
           isort --check-only .
+          black --check .
 
       - name: 🔍 Static Security Analysis (Bandit)
         run: |

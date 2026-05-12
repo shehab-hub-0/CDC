@@ -186,9 +186,7 @@ def setup_clickhouse():
 
 def setup_superset():
     print("Superset is configured to self-initialize via its entrypoint script.")
-    print(
-        "Ensure you have run 'docker compose up -d --build superset' to apply changes."
-    )
+    print("Ensure you have run 'docker compose up -d --build superset' to apply changes.")
 
 
 if __name__ == "__main__":

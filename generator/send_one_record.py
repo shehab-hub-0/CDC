@@ -16,9 +16,7 @@ from dotenv import load_dotenv
 # ──────────────────────────────────────────────────────────────
 load_dotenv()
 
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s"
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger(__name__)
 
 # Credentials
@@ -38,9 +36,7 @@ EMAIL_RECEIVER = os.getenv("EMAIL_RECEIVER", EMAIL_SENDER)
 def send_postgres_record():
     """Inserts one high-risk admin record into Postgres (Full v2 Schema)."""
     try:
-        conn = psycopg2.connect(
-            host=DB_HOST, database=DB_NAME, user=DB_USER, password=DB_PASS, port=DB_PORT
-        )
+        conn = psycopg2.connect(host=DB_HOST, database=DB_NAME, user=DB_USER, password=DB_PASS, port=DB_PORT)
         cur = conn.cursor()
 
         txn_id = str(uuid.uuid4())
@@ -105,9 +101,7 @@ def send_gmail_alert(amount, txn_id):
         msg = MIMEMultipart("alternative")
         msg["From"] = f"CDC Security System <{EMAIL_SENDER}>"
         msg["To"] = EMAIL_RECEIVER
-        msg["Subject"] = (
-            f"🚨 تنبيه أمني: عملية بمبلغ كبير | Security Alert: High-Value Transaction"
-        )
+        msg["Subject"] = f"🚨 تنبيه أمني: عملية بمبلغ كبير | Security Alert: High-Value Transaction"
 
         html_body = f"""
         <html>
@@ -158,9 +152,7 @@ def send_whatsapp_alert(amount, txn_id):
             f"✅ *CDC Monitoring*"
         )
         logger.info(f"📱 Sending WhatsApp to {ADMIN_PHONE}...")
-        pywhatkit.sendwhatmsg_instantly(
-            ADMIN_PHONE, message, wait_time=15, tab_close=True
-        )
+        pywhatkit.sendwhatmsg_instantly(ADMIN_PHONE, message, wait_time=15, tab_close=True)
         logger.info("✅ WhatsApp sent!")
     except Exception as e:
         logger.error(f"❌ WhatsApp Error: {e}")
