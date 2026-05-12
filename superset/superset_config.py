@@ -1,10 +1,16 @@
+"""
+Apache Superset Configuration for Financial CDC Project.
+"""
+
 import os
 
 # Security
 SECRET_KEY = os.environ.get("SUPERSET_SECRET_KEY", "change_me_in_production")
 
 # Metadata Database (PostgreSQL)
-SQLALCHEMY_DATABASE_URI = os.environ.get("SUPERSET_DB_URI", "postgresql://postgres:postgres@postgres:5432/superset_metadata")
+SQLALCHEMY_DATABASE_URI = os.environ.get(
+    "SUPERSET_DB_URI", "postgresql://postgres:postgres@postgres:5432/superset_metadata"
+)
 
 # Security & CSRF
 WTF_CSRF_ENABLED = True

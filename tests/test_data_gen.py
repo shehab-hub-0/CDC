@@ -1,4 +1,5 @@
-import pytest
+"""Unit tests for the synthetic transaction data generator."""
+
 from main import generate_transaction
 
 

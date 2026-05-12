@@ -695,7 +695,7 @@ def import_all():
                     print(f"  ❌ {e}")
                     continue
             else:
-                print(f"  ℹ️  Exists — upserting metrics & columns...")
+                print("  ℹ️  Exists — upserting metrics & columns...")
                 upsert_metrics(db.session, target_table, SqlMetric)
                 upsert_columns(db.session, target_table, TableColumn)
 
@@ -765,8 +765,8 @@ def import_all():
 
                 print(f"\n  🎉 Dashboard '{dash_data['dashboard_title']}' created!")
                 print(f"     Charts  : {len(all_slices)}")
-                print(f"     Filters : 6 native filters (time, status, type, category, city, vip)")
-                print(f"     Refresh : every 5 seconds")
+                print("     Filters : 6 native filters (time, status, type, category, city, vip)")
+                print("     Refresh : every 5 seconds")
 
             except Exception as e:
                 db.session.rollback()

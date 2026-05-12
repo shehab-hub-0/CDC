@@ -336,7 +336,7 @@ def main() -> None:
     raw_stream = read_kafka_stream(spark)
     final_stream = apply_transformations(raw_stream)
 
-    query = final_stream.writeStream.foreachBatch(process_batch).outputMode("update").start()
+    _query = final_stream.writeStream.foreachBatch(process_batch).outputMode("update").start()
 
     logger.info("Bank-Grade CDC pipeline is running...")
     spark.streams.awaitAnyTermination()
