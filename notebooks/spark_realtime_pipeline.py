@@ -18,13 +18,7 @@ import requests
 from dotenv import load_dotenv
 from pyspark.sql import DataFrame, SparkSession
 from pyspark.sql.functions import col, current_timestamp, from_json, when
-from pyspark.sql.types import (
-    BooleanType,
-    DoubleType,
-    StringType,
-    StructField,
-    StructType,
-)
+from pyspark.sql.types import BooleanType, DoubleType, StringType, StructField, StructType
 
 # ──────────────────────────────────────────────────────────────
 # Configuration

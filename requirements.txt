@@ -12,4 +12,4 @@ pytest
 flake8
 bandit
 black
-isort
+isort==5.13.2

@@ -22,7 +22,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install flake8 bandit black isort
+          pip install -r requirements.txt
 
       - name: 📝 Check Code Formatting (Isort/Black)
         run: |
