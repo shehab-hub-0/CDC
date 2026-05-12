@@ -3,3 +3,9 @@
 __pycache__
 .env
 *.pyc
+.ipynb_checkpoints
+.pytest_cache
+*.log
+dist/
+build/
+*.egg-info/

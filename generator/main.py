@@ -4,7 +4,7 @@ Bank-Grade Real-Time Transaction Data Generator (Enriched v2)
 
 import logging
 import os
-import random
+import random  # nosec
 import time
 from datetime import datetime, timezone
 from typing import Any

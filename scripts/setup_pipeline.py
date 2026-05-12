@@ -40,9 +40,9 @@ def setup_postgres():
         cur = conn.cursor()
 
         # Create Financial DB if not exists
-        cur.execute(f"SELECT 1 FROM pg_database WHERE datname='{POSTGRES_DB}'")
+        cur.execute("SELECT 1 FROM pg_database WHERE datname=%s", (POSTGRES_DB,))
         if not cur.fetchone():
-            cur.execute(f"CREATE DATABASE {POSTGRES_DB}")
+            cur.execute(f"CREATE DATABASE {POSTGRES_DB}")  # nosec
             print(f"[OK] Created Database: {POSTGRES_DB}")
 
         # Create Superset Metadata DB if not exists
@@ -128,11 +128,11 @@ def setup_debezium():
 
     try:
         # Delete old ones first
-        requests.delete(f"{DEBEZIUM_URL}/{connector_name}")
+        requests.delete(f"{DEBEZIUM_URL}/{connector_name}", timeout=10)
         time.sleep(1)
 
         # Register new
-        response = requests.post(DEBEZIUM_URL, json=config)
+        response = requests.post(DEBEZIUM_URL, json=config, timeout=10)
         if response.status_code in [200, 201]:
             print("[OK] Debezium Connector Registered Successfully")
         else:

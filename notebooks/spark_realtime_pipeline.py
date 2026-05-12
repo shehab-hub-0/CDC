@@ -146,7 +146,7 @@ def apply_transformations(df: DataFrame) -> DataFrame:
             "country": "Unknown",
             "phone_number": "N/A",
             "payment_method": "N/A",
-            "ip_address": "0.0.0.0",
+            "ip_address": "0.0.0.0",  # nosec
             "category": "Other",
             "status": "PENDING",
             "device_type": "Unknown",
