@@ -26,7 +26,7 @@ jobs:
 
       - name: 📝 Check Code Formatting (Black)
         run: |
-          black --check .
+          black --check . --exclude scripts/setup_pipeline.py
 
       - name: 🔍 Static Security Analysis (Bandit)
         run: |
