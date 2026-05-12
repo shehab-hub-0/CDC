@@ -1,0 +1,15 @@
+# Core Dependencies
+faker
+psycopg2-binary
+python-dotenv
+requests
+clickhouse-driver
+
+# Testing
+pytest
+
+# static analysis & Linting
+flake8
+bandit
+black
+isort
