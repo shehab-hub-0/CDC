@@ -616,8 +616,7 @@ def import_all():
         print("❌ Could not connect. Aborting.")
         return
 
-    from superset.connectors.sqla.models import (SqlaTable, SqlMetric,
-                                                 TableColumn)
+    from superset.connectors.sqla.models import SqlaTable, SqlMetric, TableColumn
     from superset.models.core import Database
     from superset.models.dashboard import Dashboard
     from superset.models.slice import Slice
